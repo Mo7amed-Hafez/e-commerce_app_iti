@@ -19,7 +19,7 @@ class ProfilePage extends StatelessWidget {
 
       body: ListView(
         children: [
-          // 🔹 User Info
+          //  User Info
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -94,7 +94,7 @@ class ProfilePage extends StatelessWidget {
 
           const Divider(),
 
-          // 🔹 Wishlist Section
+          //  Wishlist Section
           const Padding(
             padding: EdgeInsets.all(12.0),
             child: Text(
@@ -117,7 +117,7 @@ class ProfilePage extends StatelessWidget {
 
           const Divider(),
 
-          // 🔹 Previous Orders Section
+          // Previous Orders Section
           const Padding(
             padding: EdgeInsets.all(12.0),
             child: Text(

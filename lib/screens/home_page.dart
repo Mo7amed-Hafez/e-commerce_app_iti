@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
 
-      drawer: buildDrawer(),
+      drawer: BuildDrawer(),
 
       body: Padding(
         padding: const EdgeInsets.all(8.0),

@@ -1,14 +1,38 @@
 import 'package:flutter/material.dart';
+
+import 'package:iti_fl_day3/data/sharedPreferences.dart';
 import 'package:iti_fl_day3/screens/cart_page.dart';
 import 'package:iti_fl_day3/screens/home_page.dart';
+
 import 'package:iti_fl_day3/screens/products.dart';
 import 'package:iti_fl_day3/screens/profile_page.dart';
 import 'package:iti_fl_day3/screens/sttings_page.dart';
 
-// Drawer 
+class BuildDrawer extends StatefulWidget {
+  const BuildDrawer({super.key});
 
-class buildDrawer extends StatelessWidget {
-  const buildDrawer({super.key});
+  @override
+  State<BuildDrawer> createState() => _BuildDrawerState();
+}
+
+class _BuildDrawerState extends State<BuildDrawer> {
+  String? userName;
+  String? userEmail;
+  String? userPhone;
+
+  @override
+  void initState() {
+    super.initState();
+    loadUserData();
+  }
+
+  Future<void> loadUserData() async {
+    userName = await SharedPrefHelper.getUsername();
+    userEmail = await SharedPrefHelper.getEmail();
+    userPhone = await SharedPrefHelper.getPhoneNumber();
+
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,25 +40,32 @@ class buildDrawer extends StatelessWidget {
       child: Container(
         color: const Color.fromARGB(176, 48, 101, 87),
         child: ListView(
-          padding: EdgeInsets.all(17),
+          padding: const EdgeInsets.all(0),
           children: [
             UserAccountsDrawerHeader(
               accountName: Text(
-                "Mohamed Hafez",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                userName ?? "Guest User",
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               accountEmail: Text(
-                "MohamedHafez@gmail.com",
-                style: TextStyle(fontSize: 13),
+                "${userEmail ?? "No Email"}\n${userPhone ?? ""}",
+                style: const TextStyle(fontSize: 13),
               ),
-              currentAccountPicture: CircleAvatar(
+              currentAccountPicture: const CircleAvatar(
                 backgroundImage: AssetImage("assets/profile1.jpg"),
               ),
-              decoration: BoxDecoration(
-                color: Colors.blueAccent[300],
-                borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(30),
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.teal, Colors.blueAccent],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
+                // borderRadius: BorderRadius.vertical(
+                //   bottom: Radius.circular(30),
+                // ),
               ),
             ),
             buildCardDrawer(
@@ -59,13 +90,25 @@ class buildDrawer extends StatelessWidget {
               title: "Products",
               icon: Icons.production_quantity_limits_sharp,
               context: context,
-              route: const ProductsPage (),
+              route: const ProductsPage(),
             ),
             buildCardDrawer(
               title: "Settings",
               icon: Icons.settings,
               context: context,
-              route: SettingsPage (),
+              route: SettingsPage(),
+            ),
+            const Divider(color: Colors.white70),
+            ListTile(
+              leading: const Icon(Icons.logout, color: Colors.redAccent),
+              title: const Text(
+                "Logout",
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () async {
+                await SharedPrefHelper.clearData(); // مسح البيانات
+                Navigator.pushReplacementNamed(context, '/LoginPage');
+              },
             ),
           ],
         ),
@@ -82,15 +125,10 @@ Widget buildCardDrawer({
   required Widget route,
 }) {
   return ListTile(
-    leading: Icon(
-      icon,
-      color: const Color.fromARGB(255, 109, 47, 226),
-    ), 
+    leading: Icon(icon, color: Colors.amberAccent),
     title: Text(title, style: const TextStyle(color: Colors.white)),
     onTap: () {
       Navigator.push(context, MaterialPageRoute(builder: (context) => route));
     },
   );
 }
-
-
