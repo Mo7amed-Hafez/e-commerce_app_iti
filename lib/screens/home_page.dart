@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:iti_fl_day3/data/consts.dart';
+import 'package:iti_fl_day3/screens/cart_page.dart';
+import 'package:iti_fl_day3/screens/products.dart' ;
+import 'package:iti_fl_day3/screens/profile_page.dart';
 import 'package:iti_fl_day3/widgets/home_widgets.dart';
 
 class HomePage extends StatefulWidget {
@@ -9,6 +13,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _selectedPageIndex = 0;
+
+  late List<Widget> _pages;
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+      const HomeContent(), 
+      const ProductsPage(),
+      const CartPage(products: [], cart: [],),
+      const ProfilePage(),
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +37,7 @@ class _HomePageState extends State<HomePage> {
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 74, 195, 159),
+        backgroundColor: ConstsData.primaryColor,
         leading: Builder(
           builder: (context) {
             return IconButton(
@@ -33,93 +52,118 @@ class _HomePageState extends State<HomePage> {
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.search, color: Colors.white),
-          )
+          ),
         ],
       ),
 
-      drawer: BuildDrawer(),
+      drawer: BuildDrawer (),
 
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView( // ✅ عشان الصفحة تتسحب كلها
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // 🔹 Banner Scroll
-              SizedBox(
-                height: 180,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    buildBanner("assets/banr3.png"),
-                    buildBanner("assets/banar1.jpg"),
-                    buildBanner("assets/banr2.jpg"),
-                  ],
-                ),
-              ),
+      body: _pages[_selectedPageIndex], // ✅ يعرض الصفحة حسب الـ index
 
-              const SizedBox(height: 15),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedPageIndex,
+        selectedItemColor: ConstsData.primaryColor,
+        unselectedItemColor: Colors.grey,
+        type: BottomNavigationBarType.fixed,
+        onTap: (index) {
+          setState(() {
+            _selectedPageIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.shopping_bag), label: "Products"),
+          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: "Cart"),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+        ],
+      ),
+    );
+  }
+}
 
-              const Text(
-                "Welcome to MAFIA store 🛍️",
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
-              ),
+// HomePage
+class HomeContent extends StatelessWidget {
+  const HomeContent({super.key});
 
-              const SizedBox(height: 20),
-
-              // 🔹 Categories Section
-              const Text(
-                "Categories",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(height: 10),
-
-              SizedBox(
-                height: 100,
-                child: ListView(
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    buildCategory("Electronics", Icons.phone_android),
-                    buildCategory("Fashion", Icons.checkroom),
-                    buildCategory("Sports", Icons.sports_soccer),
-                    buildCategory("Beauty", Icons.brush),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              // 🔹 New Arrivals Section
-              const Text(
-                "New Arrivals",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(height: 10),
-
-              GridView.count(
-                shrinkWrap: true, // ✅ عشان يشتغل جوه ScrollView
-                physics: const NeverScrollableScrollPhysics(),
-                crossAxisCount: 2,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-                childAspectRatio: 0.75,
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Banner
+            SizedBox(
+              height: 180,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
                 children: [
-                  buildProductCard("Camera", "assets/pr1.jpg", 1200),
-                  buildProductCard("Electronics", "assets/pr5.jpg", 1400),
-                  buildProductCard("Watch", "assets/pr2.jpg", 350.0),
-                  buildProductCard("T-Shirt ", "assets/pr4.jpg", 25.0),
+                  buildBanner("assets/banr3.png"),
+                  buildBanner("assets/banar1.jpg"),
+                  buildBanner("assets/banr2.jpg"),
                 ],
               ),
-            ],
-          ),
+            ),
+
+            const SizedBox(height: 15),
+
+            const Text(
+              "Welcome to MAFIA store 🛍️",
+              style: TextStyle(
+                fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+            ),
+
+            const SizedBox(height: 20),
+
+            const Text(
+              "Categories",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 10),
+
+            SizedBox(
+              height: 100,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  buildCategory("Electronics", Icons.phone_android),
+                  buildCategory("Fashion", Icons.checkroom),
+                  buildCategory("Sports", Icons.sports_soccer),
+                  buildCategory("Beauty", Icons.brush),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            const Text(
+              "New Arrivals",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+            ),
+            const SizedBox(height: 10),
+
+            GridView.count(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisCount: 2,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              childAspectRatio: 0.75,
+              children: [
+                buildProductCard("Camera", "assets/pr1.jpg", 1200),
+                buildProductCard("Electronics", "assets/pr5.jpg", 1400),
+                buildProductCard("Watch", "assets/pr2.jpg", 350.0),
+                buildProductCard("T-Shirt ", "assets/pr4.jpg", 25.0),
+              ],
+            ),
+          ],
         ),
       ),
     );
   }
 }
+
 
 //  Banner Widget
 Widget buildBanner(String imageAsset) {
@@ -164,7 +208,11 @@ Widget buildProductCard(String name, String image, double price) {
         Expanded(
           child: ClipRRect(
             borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-            child: Image.asset(image, fit: BoxFit.cover, width: double.infinity),
+            child: Image.asset(
+              image,
+              fit: BoxFit.cover,
+              width: double.infinity,
+            ),
           ),
         ),
         Padding(
@@ -174,8 +222,10 @@ Widget buildProductCard(String name, String image, double price) {
             children: [
               Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
               const SizedBox(height: 4),
-              Text("\$${price.toString()}",
-                  style: const TextStyle(color: Colors.teal)),
+              Text(
+                "\$${price.toString()}",
+                style: const TextStyle(color: Colors.teal),
+              ),
             ],
           ),
         ),

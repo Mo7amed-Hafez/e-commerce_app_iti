@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:iti_fl_day3/screens/cart_page.dart';
 import 'package:iti_fl_day3/screens/home_page.dart';
 import 'package:iti_fl_day3/screens/login_page.dart';
-import 'package:iti_fl_day3/screens/products.dart';
+import 'package:iti_fl_day3/screens/products.dart' ;
 import 'package:iti_fl_day3/screens/profile_page.dart';
 import 'package:iti_fl_day3/screens/register_page.dart';
 import 'package:iti_fl_day3/screens/splash_page.dart';
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         '/RegisterPage': (context) => const RegisterPage(),
         '/HomePage': (context) => const HomePage(),
         '/ProductsPage': (context) => const ProductsPage(),
-        '/CartPage': (context) => const CartPage(),
+        '/CartPage': (context) => const CartPage(cart: [], products: [],),
         '/ProfilePage': (context) => const ProfilePage(),
         '/SettingsPage': (context) => const SettingsPage(),
       },

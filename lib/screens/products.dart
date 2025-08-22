@@ -1,20 +1,6 @@
 import 'package:flutter/material.dart';
-
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const ProductsPage(),
-    );
-  }
-}
+import 'package:iti_fl_day3/screens/product_details.dart';
+import 'cart_page.dart';
 
 class ProductsPage extends StatefulWidget {
   const ProductsPage({super.key});
@@ -52,21 +38,13 @@ class _ProductsPageState extends State<ProductsPage> {
       "image": "assets/pr4.jpg",
     },
     {
-      "title": "Elctronics",
+      "title": "Electronics",
       "subtitle": "Laptop and others",
       "image": "assets/pr5.jpg"
     },
-    {
-      "title": "Makeup",
-      "subtitle": "Beauty kit",
-      "image": "assets/pr6.jpg"
-    },
   ];
 
-  // حالة الـ Wishlist لكل منتج
   final Set<int> wishlist = {};
-
-  // حالة الـ Cart
   final List<int> cart = [];
 
   @override
@@ -74,13 +52,15 @@ class _ProductsPageState extends State<ProductsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Products Gallery"),
-        backgroundColor: Colors.teal,
         actions: [
           IconButton(
             icon: const Icon(Icons.shopping_cart),
             onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Cart contains ${cart.length} items 🛒")),
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => CartPage(products: products, cart: cart),
+                ),
               );
             },
           ),
@@ -102,9 +82,7 @@ class _ProductsPageState extends State<ProductsPage> {
             return buildProductCard(
               context,
               index,
-              product["title"]!,
-              product["subtitle"]!,
-              product["image"]!,
+              product,
               isFav,
             );
           },
@@ -113,116 +91,90 @@ class _ProductsPageState extends State<ProductsPage> {
     );
   }
 
-  //  Card للمنتج
   Widget buildProductCard(
     BuildContext context,
     int index,
-    String title,
-    String subtitle,
-    String imagePath,
+    Map<String, String> product,
     bool isFav,
   ) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      child: Stack(
-        children: [
-          
-          ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: Image.asset(
-              imagePath,
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: double.infinity,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => ProductDetailsPage(
+              product: product,
+              onAddToCart: () {
+                setState(() {
+                  cart.add(index);
+                });
+              },
             ),
           ),
-
-          
-          Positioned(
-            top: 8,
-            right: 8,
-            child: CircleAvatar(
-              backgroundColor: Colors.white70,
-              child: IconButton(
-                icon: Icon(
-                  isFav ? Icons.favorite : Icons.favorite_border_outlined,
-                  color: Colors.red,
-                ),
-                onPressed: () {
-                  setState(() {
-                    if (isFav) {
-                      wishlist.remove(index);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("$title removed from Wishlist ❌")),
-                      );
-                    } else {
-                      wishlist.add(index);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("$title added to Wishlist ❤️")),
-                      );
-                    }
-                  });
-                },
+        );
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        child: Stack(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: Image.asset(
+                product["image"]!,
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: double.infinity,
               ),
             ),
-          ),
-
-          // العنوان + الزر
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.7),
-                borderRadius: const BorderRadius.vertical(
-                  bottom: Radius.circular(15),
+            Positioned(
+              top: 8,
+              right: 8,
+              child: CircleAvatar(
+                backgroundColor: Colors.white70,
+                child: IconButton(
+                  icon: Icon(
+                    isFav ? Icons.favorite : Icons.favorite_border_outlined,
+                    color: Colors.red,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      if (isFav) {
+                        wishlist.remove(index);
+                      } else {
+                        wishlist.add(index);
+                      }
+                    });
+                  },
                 ),
               ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
+            ),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.6),
+                  borderRadius: const BorderRadius.vertical(
+                    bottom: Radius.circular(15),
                   ),
-                  Text(
-                    subtitle,
-                    style: const TextStyle(color: Colors.white70, fontSize: 12),
-                  ),
-                  const SizedBox(height: 6),
-
-                  // زر Add to Cart
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.teal,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          cart.add(index);
-                        });
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("$title added to Cart 🛒")),
-                        );
-                      },
-                      icon: const Icon(Icons.add_shopping_cart, size: 18,color: Colors.white,),
-                      label: const Text("Add to Cart",style: TextStyle(color: Colors.white),),
-                    ),
-                  ),
-                ],
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(product["title"]!,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold)),
+                    Text(product["subtitle"]!,
+                        style: const TextStyle(
+                            color: Colors.white70, fontSize: 12)),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

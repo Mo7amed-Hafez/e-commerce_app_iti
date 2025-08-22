@@ -6,3 +6,11 @@ class ConstsData {
   static Color secondaryColor2 = const Color(0xFF7e8382);
   static Color lightColor = Colors.blue.shade100;
 }
+
+class Product {
+  final String name;
+  final double price;
+  final String image;
+
+  Product({required this.name, required this.price, required this.image});
+}

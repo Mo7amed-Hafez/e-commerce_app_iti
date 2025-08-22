@@ -4,7 +4,7 @@ import 'package:iti_fl_day3/data/sharedPreferences.dart';
 import 'package:iti_fl_day3/screens/cart_page.dart';
 import 'package:iti_fl_day3/screens/home_page.dart';
 
-import 'package:iti_fl_day3/screens/products.dart';
+import 'package:iti_fl_day3/screens/products.dart' ;
 import 'package:iti_fl_day3/screens/profile_page.dart';
 import 'package:iti_fl_day3/screens/sttings_page.dart';
 
@@ -38,7 +38,7 @@ class _BuildDrawerState extends State<BuildDrawer> {
   Widget build(BuildContext context) {
     return Drawer(
       child: Container(
-        color: const Color.fromARGB(176, 48, 101, 87),
+        color: Color.fromARGB(255, 33, 114, 84),
         child: ListView(
           padding: const EdgeInsets.all(0),
           children: [
@@ -59,7 +59,12 @@ class _BuildDrawerState extends State<BuildDrawer> {
               ),
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Colors.teal, Colors.blueAccent],
+                  colors: [
+                    Color.fromARGB(255, 14, 79, 73),
+                    Color.fromARGB(255, 19, 86, 99),
+                    Color.fromARGB(255, 20, 110, 101),
+                    Color.fromARGB(255, 33, 114, 84),
+                  ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -84,7 +89,7 @@ class _BuildDrawerState extends State<BuildDrawer> {
               title: "Cart",
               icon: Icons.shopping_cart,
               context: context,
-              route: const CartPage(),
+              route:  const CartPage(products: [], cart: [],),
             ),
             buildCardDrawer(
               title: "Products",
@@ -125,8 +130,8 @@ Widget buildCardDrawer({
   required Widget route,
 }) {
   return ListTile(
-    leading: Icon(icon, color: Colors.amberAccent),
-    title: Text(title, style: const TextStyle(color: Colors.white)),
+    leading: Icon(icon, color: Colors.cyan),
+    title: Text(title, style: const TextStyle(color: Colors.white,fontWeight: FontWeight.w500)),
     onTap: () {
       Navigator.push(context, MaterialPageRoute(builder: (context) => route));
     },
