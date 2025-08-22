@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashPage> {
   }
 
   Future<void> _navigate() async {
-    // نخلي فيه delay علشان splash تبان
+    
     await Future.delayed(const Duration(seconds: 2));
 
     bool loggedIn = await SharedPrefHelper.isLoggedIn();
@@ -33,13 +33,13 @@ class _SplashScreenState extends State<SplashPage> {
         MaterialPageRoute(builder: (_) => const HomePage()),
       );
     } else if (username == null) {
-      // لو مفيش مستخدم متسجل أصلاً → يروح Register
+      // لو مفيش مستخدم متسجل أصلاً  يروح Register
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) => const RegisterPage()),
       );
     } else {
-      // مستخدم موجود بس مش عامل login → يروح Login
+      // مستخدم موجود بس مش عامل login  يروح Login
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (_) =>  const LoginPage()),

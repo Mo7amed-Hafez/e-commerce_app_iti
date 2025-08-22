@@ -165,7 +165,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 const SizedBox(height: 30),
 
-                // Register Button
+                
                 _isLoading
                     ? const CircularProgressIndicator()
                     : ElevatedButton(
@@ -185,7 +185,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 const SizedBox(height: 20),
 
-                // Login Link
+                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

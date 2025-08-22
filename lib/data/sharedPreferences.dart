@@ -16,19 +16,19 @@ class SharedPrefHelper {
     await prefs.setBool("isLoggedIn", true);
   }
 
-  // جلب اسم المستخدم
+  // علشان نجليب اسم المستخدم
   static Future<String?> getUsername() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString("username");
   }
 
-  // جلب الإيميل
+  // علشان نجليب الإيميل
   static Future<String?> getEmail() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString("email");
   }
 
-  // جلب رقم الهاتف ✅
+  //  رقم الهاتف علشان نجليب
   static Future<String?> getPhoneNumber() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString("phoneNumber");
@@ -59,7 +59,7 @@ class SharedPrefHelper {
     await prefs.setBool("isLoggedIn", false);
   }
 
-  // مسح كل البيانات (لو محتاج نعمل Reset كامل)
+  // مسح كل البيانات 
   static Future clearData() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();

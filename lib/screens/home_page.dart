@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
 
       drawer: BuildDrawer (),
 
-      body: _pages[_selectedPageIndex], // ✅ يعرض الصفحة حسب الـ index
+      body: _pages[_selectedPageIndex], 
 
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedPageIndex,
